@@ -24,6 +24,26 @@ import subprocess
 import os
 
 
+class GeoOp(QWidget):
+	def __init__(self, main_window):
+		super().__init__()
+
+		self.main_window = main_window
+
+		self.setWindowTitle("Onda Geometrica")
+
+		self.resize(400,300)
+
+		layout =QVBoxLayout()
+		btn_volver = QPushButton("Regresa al principio")
+		btn_volver.clicked.connect(self.volver)
+		layout.addWidget(btn_volver)
+		self.setLayout(layout)
+
+	def volver(self):
+		self.close()
+		self.main_window.show()
+
 class VentanaPrincipal(QWidget):
 
 	def __init__(self):
@@ -35,19 +55,33 @@ class VentanaPrincipal(QWidget):
 
 		layout = QHBoxLayout()
 
-		Button2 = QPushButton("Modulo Ondas")
-		Button2.setFixedSize(400,100)
+		#manejo de button a menu de ondas
+		ButtonOnda = QPushButton("Modulo Ondas")
+		ButtonOnda.setFixedSize(400,100)
+		#ButtonOnda.clicked.connect(VentanaSecundaria())
+		ButtonOnda.clicked.connect(self.abrir_MOndas)
 
-		
-		Button1 = QPushButton("Modulo Optica Geometrica")
-		Button1.setFixedSize(400,100)
-		Button1.clicked.connect(self.modulo_ondas)
-		layout.addWidget(Button1)
-		layout.addWidget(Button2)
-		
-	
 
+		#majeno de button menu de Optica Geometrica
+		ButtonGeo = QPushButton("Modulo Optica Geometrica")
+		ButtonGeo.setFixedSize(400,100)
+		ButtonGeo.clicked.connect(self.abrir_GeoOp)
+
+		layout.addWidget(ButtonGeo)
+		layout.addWidget(ButtonOnda)
 		self.setLayout(layout)
+
+
+	def abrir_GeoOp(self):
+		self.hide()
+		self.sec = GeoOp(self)
+		self.sec.show()
+
+	def abrir_MOndas(self):
+		from Modulo_ondas import MOndas
+		self.hide()
+		self.ter = MOndas(self)
+		self.ter.show()
 
 	@Slot()
 	def modulo_ondas(self):
@@ -61,20 +95,10 @@ class VentanaPrincipal(QWidget):
 		except Exception as e:
 			QMessageBox.critical(self, "Error", f"Ocurrió un error: {e}")
 
-
-
-		
-
-
-
-
-
-
 if __name__ == "__main__":
 
 	app = QApplication(sys.argv)
-
 	ventana = VentanaPrincipal()
 	ventana.show()
-
 	sys.exit(app.exec())
+
