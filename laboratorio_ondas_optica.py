@@ -46,7 +46,7 @@ class VentanaPrincipal(QWidget):
 
     def abrir_MOndas(self):
         try:
-            from Modulo_ondas import MOndas
+            from modulo_ondas import MOndas
             self.hide()
             self.ter = MOndas(self)
             self.ter.show()
